@@ -18,8 +18,8 @@ class Memory {
     _req_size = size;
 
     if (_req_size > 0) {
-      assert(_req_size <= 2 * 1024 * 1024);
       _act_size = 2 * 1024 * 1024;
+      assert(_req_size <= _act_size);
       _virt =
           mmap(NULL, _act_size, PROT_READ | PROT_WRITE,
                MAP_PRIVATE | MAP_HUGETLB | MAP_ANONYMOUS | MAP_POPULATE, 0, 0);
@@ -35,7 +35,10 @@ class Memory {
   }
   ~Memory() {
     if (_act_size > 0) {
-      munmap(_virt, 2 * 1024 * 1024);
+      if (munmap(_virt, _act_size) != 0) {
+        perror("munmap:");
+        panic("");
+      }
     }
   }
   template <class T>
