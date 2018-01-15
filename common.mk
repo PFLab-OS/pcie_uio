@@ -8,7 +8,7 @@ default: a.out
 
 -include $(DEPS)
 
-TARGET_PCI_BUS_ID=$(shell lspci -v | grep $(TARGET_KEYWORD) | cut -f 1 -d ' ')
+TARGET_PCI_BUS_ID:=$(if $(TARGET_PCI_BUS_ID),$(TARGET_PCI_BUS_ID),$(shell lspci -v | grep $(TARGET_KEYWORD) | cut -f 1 -d ' '))
 TARGET_PCI_VID_DID=$(shell lspci -n -s $(TARGET_PCI_BUS_ID) | cut -f 3 -d ' ')
 TARGET_PCI_VID=$(shell echo $(TARGET_PCI_VID_DID) | cut -f 1 -d ':')
 TARGET_PCI_DID=$(shell echo $(TARGET_PCI_VID_DID) | cut -f 2 -d ':')
