@@ -10,7 +10,8 @@ Support library for uio_pci_generic device drivers.
   - `ARGS` is passed to a.out when `make run`.
 ```
 OBJS= main.o keyboard.o xhci.o usb.o hub.o
-TARGET_KEYWORD=XHCI
+TARGET_PCI_BUS_ID=              # Leave blank unless you want to specify device manually.
+TARGET_KEYWORD=XHCI             # This will be overrided by TARGET_PCI_BUS_ID if specified.
 TARGET_DEFAULT_DRIVER=xhci_hcd
 ARGS=
 
@@ -26,6 +27,9 @@ git submodule add https://github.com/PFLab-OS/pcie_uio.git
 - `make load` to give a device control to uio_pci_generic.
 - After that, `make run` to start and test your driver.
 - `make restore` may be able to restore the control to `TARGET_DEFAULT_DRIVER`, or it may cause a kernel panic.
+
+### common.mk parameters
+- Specify `TARGET_PCI_BUS_ID` when `TARGET_KEYWORD` is not worked or ambiguous (e.g. multiple devices). example: `02:00.0`
 
 ### Examples
 There are some examples using this library:
